@@ -1,0 +1,48 @@
+version: '3.4'
+
+services:
+  api:
+    build:
+      context: ./backend/api
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:8090
+    network_mode: bridge
+
+  bot:
+    build:
+      context: ./backend/bot
+      dockerfile: Dockerfile
+    network_mode: bridge
+    env_file:
+      - .env.local
+    depends_on:
+      - api
+    restart: always
+
+  tma_frontend:
+    image: node:latest
+    working_dir: /usr/src/app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/tma:/usr/src/app
+    command: sh -c "npm install && npm run dev-host"
+    depends_on:
+      - api
+    network_mode: bridge
+
+  ngrok:
+    image: ngrok/ngrok:alpine
+    env_file:
+      - .env.local
+    command: 'http --domain="$DOMAIN" tma_frontend:5173'
+    ports:
+      - '4040:4040'
+    expose:
+      - '4040'
+    depends_on:
+      - tma_frontend

@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  tma-frontend:
+    image: node:latest
+    working_dir: /usr/src/app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/tma:/usr/src/app
+    command: sh -c "npm install && npm run dev-host" 
+
+  ngrok:
+    image: ngrok/ngrok:alpine
+    env_file:
+      - .env
+    command: 'http --domain=$DOMAIN tma-frontend:5173'        
+    ports:
+      - '4040:4040'
+    expose:
+      - '4040'

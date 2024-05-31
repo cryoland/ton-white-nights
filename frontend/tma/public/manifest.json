@@ -1,0 +1,15 @@
+{
+    "url": "https://cryo.land",
+    "name": "Cryoland Test dApp",
+    "iconUrl": "https://right-robin-great.ngrok-free.app/icon.png",
+    "short_name": "DApp",
+    "start_url": "https://right-robin-great.ngrok-free.app/",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "/icon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
