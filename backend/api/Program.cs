@@ -17,6 +17,18 @@ namespace api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // !! for test only
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: "all",
+                                  builder =>
+                                  {
+                                      builder.AllowAnyMethod()
+                                             .AllowAnyOrigin()
+                                             .AllowAnyHeader();
+                                  });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -24,6 +36,7 @@ namespace api
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.UseCors("all");
             }
 
             app.UseHttpsRedirection();

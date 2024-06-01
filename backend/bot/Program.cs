@@ -5,6 +5,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using System.Text.Json;
 using Telegram.Bot.Types.ReplyMarkups;
+using System;
 
 class Program
 {
@@ -76,10 +77,7 @@ class Program
                             {
                                 markup = new InlineKeyboardMarkup(new InlineKeyboardButton(text: "Начать")
                                 {
-                                    WebApp = new WebAppInfo
-                                    {
-                                        Url = $"https://t.me/ton_white_nights_bot/quests?username={update.Message.Chat.FirstName}&chatId={update.Message.Chat.Id}"
-                                    }
+                                    Url = $"https://t.me/ton_white_nights_bot/quests?username={update.Message.Chat.FirstName}&chatId={update.Message.Chat.Id}"
                                 });
                                 await _botClient.SendTextMessageAsync(
                                                     chatId: update.Message.Chat.Id,

@@ -1,27 +1,6 @@
 version: '3.4'
 
 services:
-  api:
-    build:
-      context: ./backend/api
-      dockerfile: Dockerfile
-    ports:
-      - "8090:8090"
-    env_file:
-      - .env
-    network_mode: bridge
-
-  bot:
-    build:
-      context: ./backend/bot
-      dockerfile: Dockerfile
-    network_mode: bridge
-    env_file:
-      - .env
-    depends_on:
-      - api
-    restart: always
-
   tma_frontend:
     image: node:latest
     working_dir: /usr/src/app
@@ -30,9 +9,6 @@ services:
     volumes:
       - ./frontend/tma:/usr/src/app
     command: sh -c "npm install && npm run dev-host"
-    depends_on:
-      - api
-    network_mode: bridge
 
   ngrok:
     image: ngrok/ngrok:alpine
@@ -45,36 +21,3 @@ services:
       - '4040'
     depends_on:
       - tma_frontend
-
-  strapi:
-    container_name: strapi
-    image: strapi/strapi
-    env_file: .env
-    restart: unless-stopped
-    ports:
-      - '1337:1337'
-    volumes:
-      - ./.workdir/strapi:/srv/app
-    depends_on:
-      - postgres_db
-    command: 'strapi start'
-    networks:
-      - strapi
-
-  postgres_db:
-    container_name: postgres
-    image: postgres
-    restart: always
-    env_file:
-      - .env
-    volumes:
-      - ./.workdir/postgres_data:/var/lib/postgresql/data
-    ports:
-      - '5432:5432'
-    networks:
-      - strapi
-
-  networks:
-    strapi:
-      name: Strapi
-      driver: bridge

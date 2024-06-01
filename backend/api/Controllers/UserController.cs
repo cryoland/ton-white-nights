@@ -17,7 +17,7 @@ namespace api.Controllers
         [HttpPost(Name = "explore")]
         public IActionResult ExploreInitDataFromTMA([FromBody] object json)
         {
-            string data = JsonSerializer.Serialize(json, new JsonSerializerOptions { WriteIndented = true });
+          string data = JsonSerializer.Serialize(json, new JsonSerializerOptions { WriteIndented = true });
             _logger.LogInformation(data);
             return Ok();
         }
