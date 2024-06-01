@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Card } from 'primereact/card';
 import { TonConnectButton } from '@tonconnect/ui-react';
 import { useSumContract } from "../hooks/useSumContract";
@@ -15,12 +15,32 @@ import "primeflex/primeflex.css";
 import 'primeicons/primeicons.css';
 import { Link } from 'react-router-dom';
 
+import { retrieveLaunchParams } from '@tma.js/sdk';
+
+const sendInitData = async () => {
+  const params = retrieveLaunchParams();
+  await fetch(`http://127.0.0.1:8090/user/explore`, {
+    method: "POST",
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(params)
+  });
+}
+
 export const App: FC = () => {
+  
   const [value, setValue] = useState<Nullable<number | null>>(0);
   const {
     counter_value,
     sendIncrement
   } = useSumContract();
+
+  useEffect(() => {
+    sendInitData()
+      .then(_ => {})
+    return () => {};
+  }, []);
 
   const { connected } = useTonConnect();
 

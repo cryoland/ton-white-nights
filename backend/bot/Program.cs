@@ -19,8 +19,10 @@ class Program
 
     static async Task Main(string[] args)
     {
-        Console.WriteLine(Environment.GetEnvironmentVariable("TG_BOT_TOKEN"));
-        _botClient = new TelegramBotClient("7164196918:AAFmAGvij8fDPhs3GJOhM-qiHzZgltF5M3Y");
+        string? bot_token = Environment.GetEnvironmentVariable("TG_BOT_TOKEN");
+        if (string.IsNullOrEmpty(bot_token)) throw new ArgumentNullException("bot_token", "TG_BOT_TOKEN value not provided!");
+
+        _botClient = new TelegramBotClient(bot_token);
         _receiverOptions = new ReceiverOptions // Также присваем значение настройкам бота
         {
             AllowedUpdates = new UpdateType[]
@@ -76,7 +78,7 @@ class Program
                                 {
                                     WebApp = new WebAppInfo
                                     {
-                                        Url = "https://t.me/ton_white_nights_bot/quests"
+                                        Url = $"https://t.me/ton_white_nights_bot/quests?username={update.Message.Chat.FirstName}&chatId={update.Message.Chat.Id}"
                                     }
                                 });
                                 await _botClient.SendTextMessageAsync(
@@ -136,10 +138,8 @@ class Program
         }
     }
 
-    // ErrorHandler - обработчик ошибок, связанных с Bot API
     private static Task ErrorHandler(ITelegramBotClient botClient, Exception error, CancellationToken cancellationToken)
     {
-        // Тут создадим переменную, в которую поместим код ошибки и её сообщение 
         var ErrorMessage = error switch
         {
             ApiRequestException apiRequestException
