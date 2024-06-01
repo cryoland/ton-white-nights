@@ -6,15 +6,17 @@
   <link rel="icon" type="image/png" href="/icon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="manifest" href="/manifest.json">
-  <title>Test DApp</title>
+  <title>TON White Nights</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="white">
   <meta name="apple-mobile-web-app-title" content="Notentool">
 </head>
 
 <body>
-  <div id="app"></div>
+  <div id="app" style="min-height: calc(100vh - 2 * 2rem);"></div>
   <script type="module" src="/src/main.tsx"></script>
+  <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
 </body>
 
 </html>

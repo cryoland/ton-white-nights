@@ -68,7 +68,7 @@ class Program
                                     // два варианта: либо нужно добираться, либо уже на месте. пока 2 вариант рассмотрим:
                                     await _botClient.SendTextMessageAsync(
                                         chatId: update.Message.Chat.Id,
-                                        text: "(Найден ближайший маршрут: 777)\nВы на месте! Поделитесь live location, чтобы начать прохождение.\nПо истечении времени просто пришлите новый live location :)",
+                                        text: "(Найден ближайший маршрут: [Отсюда и до фонтана])\nВы на месте! Поделитесь live location, чтобы начать прохождение.\nПо истечении времени просто пришлите новый live location :)",
                                         replyMarkup: markup,
                                         cancellationToken: cancellationToken);
                                 }
@@ -81,7 +81,7 @@ class Program
                                 });
                                 await _botClient.SendTextMessageAsync(
                                                     chatId: update.Message.Chat.Id,
-                                                    text: "Маршрут 777 запущен!",
+                                                    text: "Маршрут [Отсюда и до фонтана] запущен!",
                                                     replyMarkup: markup,
                                                     cancellationToken: cancellationToken);
                             }
@@ -93,7 +93,7 @@ class Program
                             {
                                 markup = new ReplyKeyboardMarkup
                                 (
-                                    new KeyboardButton(text: "Run app")
+                                    new KeyboardButton(text: "Отправить геопозицию")
                                     {
                                         RequestLocation = true
                                     }

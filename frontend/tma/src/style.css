@@ -17,3 +17,10 @@ body {
 h1 {
   margin-top: 0;
 }
+
+a {
+  text-decoration: none;
+}
+a:visited {
+  color: initial
+}
