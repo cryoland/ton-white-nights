@@ -1,6 +1,4 @@
-import { FC, useEffect, useState } from "react";
-import { Nullable } from "primereact/ts-helpers";
-import WebApp from "@twa-dev/sdk";
+import { FC, useEffect } from "react";
 import "./style.css";
 import "primereact/resources/themes/bootstrap4-dark-blue/theme.css";
 import "primeflex/primeflex.css";
@@ -16,17 +14,18 @@ const sendInitData = async () => {
       method: "POST",
       headers: {
           'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true'
+          'ngrok-skip-browser-warning': 'true',
+          'Authorization': `Bearer ${import.meta.env.VITE_API_AUTH_TOKEN}`
       },
       body: JSON.stringify(params)
     });
-  } catch (err) { 
-    WebApp.showAlert(JSON.stringify(err));
+  } catch (err) {
+    console.warn(JSON.stringify(err))
   }
 }
 
 export const App: FC = () => {
-  const [value, setValue] = useState<Nullable<number | null>>(0);
+  //const [value, setValue] = useState<Nullable<number | null>>(0);
 
   useEffect(() => {
   sendInitData()

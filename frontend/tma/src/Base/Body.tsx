@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { About, Main, NotFound, RouteDetails, RoutesList } from "./Pages";
 
 export const Body: FC = () => {
