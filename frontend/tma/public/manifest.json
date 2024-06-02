@@ -1,9 +1,9 @@
 {
     "url": "https://cryo.land",
     "name": "Cryoland Test dApp",
-    "iconUrl": "https://right-robin-great.ngrok-free.app/icon.png",
+    "iconUrl": "https://ton-wn-tma.ngrok.dev/icon.png",
     "short_name": "DApp",
-    "start_url": "https://right-robin-great.ngrok-free.app/",
+    "start_url": "https://ton-wn-tma.ngrok.dev/",
     "display": "standalone",
     "icons": [
         {
