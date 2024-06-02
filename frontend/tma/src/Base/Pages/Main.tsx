@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Score } from "../components/Score";
 import { ProgressBar } from 'primereact/progressbar';
@@ -6,7 +6,6 @@ import { Stepper } from 'primereact/stepper';
 import { StepperPanel } from 'primereact/stepperpanel';
 import { Chip } from 'primereact/chip';
 import { useTonConnect } from "../../../hooks/useTonConnect";
-import { Nullable } from "primereact/ts-helpers";
 
 export const Main: FC = () => {
   const score = 0;
@@ -38,7 +37,7 @@ export const Main: FC = () => {
   const routeProgress = (1 + checkPoints.filter(x => x.passed).length) / (1 + checkPoints.length) * 100;
   const nextCheckPointIndex = checkPoints.map(x => x.passed).indexOf(false);
   return (
-    <>
+    <>    
       {connected && <div className="block border-round-sm px-4 py-2 mb-3" style={{ background: 'var(--blue-400)'}}>
         <Score value={score} />
       </div>}
