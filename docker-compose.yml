@@ -1,23 +1,72 @@
 version: '3.4'
 
 services:
+  wn_db_mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest   
+    container_name: wn_db_mssql
+    ports:
+      - "1433:1433"
+    volumes:
+      - .volumes/mssql/wn_db_mssql/data:/var/opt/mssql/data
+      - .volumes/mssql/wn_db_mssql/log:/var/opt/mssql/log
+      - .volumes/mssql/wn_db_mssql/secrets:/var/opt/mssql/secrets
+    environment:
+      - SA_PASSWORD=${MSSQL_DB_PASSWORD}
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+
+  api:
+    build:
+      context: ./backend/api
+      dockerfile: Dockerfile
+    ports:
+      - '8090:8090'
+    env_file: .env
+    restart: on-failure
+    depends_on:
+      - wn_db_mssql
+
+  bot:
+    build:
+      context: ./backend/bot
+      dockerfile: Dockerfile
+    env_file: .env
+    depends_on:
+      - api
+    restart: on-failure
+
   tma_frontend:
     image: node:latest
     working_dir: /usr/src/app
     ports:
-      - "5173:5173"
+      - '5173:5173'
     volumes:
       - ./frontend/tma:/usr/src/app
+    environment:
+      - "API_DOMAIN=${API_DOMAIN}"
     command: sh -c "npm install && npm run dev-host"
+    depends_on:
+      - api
 
-  ngrok:
+  ngrok_tma:
     image: ngrok/ngrok:alpine
-    env_file:
-      - .env
+    env_file: .env
     command: 'http --domain="$TMA_DOMAIN" tma_frontend:5173'
     ports:
       - '4040:4040'
     expose:
       - '4040'
+    depends_on:
+      - tma_frontend
+
+  ngrok_api:
+    image: ngrok/ngrok:alpine
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN_2}
+    command: 'http --domain="$API_DOMAIN" api:8090'
+    ports:
+      - '4041:4040'
+    expose:
+      - '4041'
     depends_on:
       - tma_frontend
