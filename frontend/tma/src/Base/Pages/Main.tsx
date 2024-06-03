@@ -6,36 +6,7 @@ import { Stepper } from 'primereact/stepper';
 import { StepperPanel } from 'primereact/stepperpanel';
 import { Chip } from 'primereact/chip';
 import { useTonConnect } from "../../../hooks/useTonConnect";
-
-const getCurrentUserRoute = async () => {
-  try {
-    return await fetch(`https://${import.meta.env.VITE_API_DOMAIN}/user/routes/current`, {
-      method: "GET",
-      headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true',
-          'Authorization': `Bearer ${import.meta.env.VITE_API_AUTH_TOKEN}`
-      }
-    });
-  } catch (err) {
-      console.warn(JSON.stringify(err))
-  }
-}
-
-const getUserBalance = async () => {
-  try {
-    return await fetch(`https://${import.meta.env.VITE_API_DOMAIN}/user/balance`, {
-      method: "GET",
-      headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true',
-          'Authorization': `Bearer ${import.meta.env.VITE_API_AUTH_TOKEN}`
-      }
-    });
-  } catch (err) {
-      console.warn(JSON.stringify(err))
-  }
-}
+import { getCurrentUserRoute, getUserBalance } from "../../ApiClient";
 
 export const Main: FC = () => {
   const [score, setScore] = useState(0);

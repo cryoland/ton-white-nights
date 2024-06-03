@@ -1,5 +1,5 @@
 import { TonConnectButton } from "@tonconnect/ui-react";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { Image } from "primereact/image";
 import { Link } from "react-router-dom";
 

@@ -2,21 +2,7 @@ import { Chip } from 'primereact/chip';
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Panel } from 'primereact/panel';
-
-const getRoutesList = async () => {
-    try {
-      return await fetch(`https://${import.meta.env.VITE_API_DOMAIN}/routes/list`, {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': 'true',
-            'Authorization': `Bearer ${import.meta.env.VITE_API_AUTH_TOKEN}`
-        }
-      });
-    } catch (err) {
-        console.warn(JSON.stringify(err))
-    }
-}
+import { getRoutesList } from '../../ApiClient';
 
 export const RoutesList: FC = () => {
     const [routesList, setRoutesList] = useState<any[]>([]);

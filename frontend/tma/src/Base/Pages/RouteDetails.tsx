@@ -3,21 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Panel } from 'primereact/panel';
 import { useNavigate } from 'react-router-dom';
-
-const getRouteDetails = async (routeId: number) => {
-    try {
-      return await fetch(`https://${import.meta.env.VITE_API_DOMAIN}/routes/${routeId}`, {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': 'true',
-            'Authorization': `Bearer ${import.meta.env.VITE_API_AUTH_TOKEN}`
-        }
-      });
-    } catch (err) {
-        console.warn(JSON.stringify(err))
-    }
-}
+import { getRouteDetails } from '../../ApiClient';
 
 export const RouteDetails: FC = () => {
     const { routeId } = useParams();
