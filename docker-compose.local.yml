@@ -36,7 +36,7 @@ services:
     restart: on-failure
 
   tma_frontend:
-    image: node:latest
+    image: node:21.7.3-alpine3.20
     working_dir: /usr/src/app
     ports:
       - '5173:5173'
@@ -50,7 +50,7 @@ services:
       - api
 
   ngrok_tma:
-    image: ngrok/ngrok:alpine
+    image: ngrok/ngrok:3.10.0-alpine
     env_file: .env.local
     command: 'http --domain="$TMA_DOMAIN" tma_frontend:5173'
     ports:
@@ -61,7 +61,7 @@ services:
       - tma_frontend
 
   ngrok_api:
-    image: ngrok/ngrok:alpine
+    image: ngrok/ngrok:3.10.0-alpine
     environment:
       - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN_2}
     command: 'http --domain="$API_DOMAIN" api:8090'
