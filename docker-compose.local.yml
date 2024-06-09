@@ -15,13 +15,57 @@ services:
   #     - ACCEPT_EULA=Y
   #     - MSSQL_PID=Express
 
+  cms_db_mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest   
+    container_name: cms_db_mssql
+    ports:
+      - "11433:1433"
+    volumes:
+      - .volumes/mssql/cms_db_mssql/data:/var/opt/mssql/data
+      - .volumes/mssql/cms_db_mssql/log:/var/opt/mssql/log
+      - .volumes/mssql/cms_db_mssql/secrets:/var/opt/mssql/secrets
+    environment:
+      - SA_PASSWORD=${MSSQL_DB_PASSWORD_CMS}
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+
+  cms:
+    build:
+      context: ./backend/cms
+      dockerfile: Dockerfile
+    ports:
+      - '63761:63761'
+      - '44326:44326'
+    volumes:
+      #- ./backend/cms/Views:/app/Views
+      - ./backend/cms/wwwroot/media:/app/wwwroot/media
+      #- ./backend/cms/uSync:/app/uSync
+      # - ./backend/cms/umbraco:/app/umbraco
+      - ~/.aspnet/https:/https:ro
+    environment:
+      - ASPNETCORE_HTTP_PORTS=63761
+      - ASPNETCORE_HTTPS_PORTS=44326
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT_CMS}
+      - ASPNETCORE_URLS=${ASPNETCORE_URLS_CMS}
+      - ConnectionStrings__umbracoDbDSN=${ConnectionStrings__cmsDbDSN}
+      - ConnectionStrings__ProviderName=${ConnectionStrings__cmsDbProvider}
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${Certificates__Default__Password}
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=${Certificates__Default__Path}
+    restart: on-failure
+    depends_on:
+      - cms_db_mssql
+
   api:
     build:
       context: ./backend/api
       dockerfile: Dockerfile
     ports:
       - '8090:8090'
-    env_file: .env.local
+    environment:
+      - API_AUTH_TOKEN=${API_AUTH_TOKEN}
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT_API}
+      - ASPNETCORE_URLS=${ASPNETCORE_URLS_API}
+      - ConnectionStrings__apiDbDSN=${ConnectionStrings__apiDbDSN}
     restart: on-failure
   #  depends_on:
   #    - wn_db_mssql
@@ -30,7 +74,8 @@ services:
     build:
       context: ./backend/bot
       dockerfile: Dockerfile
-    env_file: .env.local
+    environment:
+      - TG_BOT_TOKEN=${TG_BOT_TOKEN}
     depends_on:
       - api
     restart: on-failure
@@ -43,15 +88,16 @@ services:
     volumes:
       - ./frontend/tma:/usr/src/app
     environment:
-      - "API_DOMAIN=${API_DOMAIN}"
-      - "API_AUTH_TOKEN=${API_AUTH_TOKEN}"
+      - API_DOMAIN=${API_DOMAIN}
+      - API_AUTH_TOKEN=${API_AUTH_TOKEN}
     command: sh -c "npm install && npm run dev-host"
     depends_on:
       - api
 
   ngrok_tma:
     image: ngrok/ngrok:3.10.0-alpine
-    env_file: .env.local
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN_1}
     command: 'http --domain="$TMA_DOMAIN" tma_frontend:5173'
     ports:
       - '4040:4040'
