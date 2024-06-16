@@ -11,36 +11,36 @@ export const RouteDetails: FC = () => {
 
     useEffect(() => {
         getRouteDetails(parseInt(routeId as string))
-        .then(res => {
-            return (res as Response).json();
-        })
-        .then((data) => {
-            setRouteDetails(data);
-        })
-          .catch(err => console.warn(err));
-          return () => {};
-        }, [routeDetails]);
+            .then(res => {
+                return (res as Response).json();
+            })
+            .then((data) => {
+                setRouteDetails(data);
+            })
+            .catch(err => console.warn(err));
+        return () => { };
+    }, []);
 
     const navigate = useNavigate();
     return (
-        <div className="block border-round-smtext-left py-2 mb-3" style={{ background: 'var(--gray-400)'}}>        
+        <div className="block border-round-smtext-left py-2 mb-3" style={{ background: 'var(--gray-400)' }}>
             <div className="flex justify-content-start ml-2">
                 <Chip onClick={() => navigate(-1)} label="Назад" icon="pi pi-chevron-circle-left" />
             </div>
             <div className="px-3 py-2">
                 <Panel header={<><span className="text-base text-white">Текущий маршрут</span><br /><div className="text-xl text-white mt-1">{!routeDetails ? 'Loading..' : (routeDetails as any).name}</div></>}>
                     <p className="m-0">
-                    Длинное описание маршрута, по которому следуем
+                        Длинное описание маршрута, по которому следуем
                     </p>
                 </Panel>
 
                 {!!routeDetails && <Panel className="mt-3" header={<div className="text-xl text-white mt-1">Достопримечательности на маршруте</div>}>
                     {((routeDetails as any).checkPoints as any[]).map((x, index) => (
-                        <div key={'p-'+index} className='mt-0'>
+                        <div key={'p-' + index} className='mt-0'>
                             <div className="text-lg text-white">{x.name}</div>
                             <div>{x.description}</div>
                         </div>
-                    ))} 
+                    ))}
                 </Panel>}
             </div>
         </div>

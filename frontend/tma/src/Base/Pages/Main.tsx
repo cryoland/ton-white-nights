@@ -38,7 +38,7 @@ export const Main: FC = () => {
         })
       .catch(err => console.warn(err));    
       return () => {};
-    }, [score, currentRoute, nextCheckPointIndex]);
+    }, []);
 
   return (
     <>    

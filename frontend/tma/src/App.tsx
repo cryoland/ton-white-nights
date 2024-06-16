@@ -9,14 +9,13 @@ import { sendInitData } from "./ApiClient";
 
 export const App: FC = () => {
   useEffect(() => {
-  sendInitData()
-    .then(_ => {})
-    .catch(err => console.error(err));
-    return () => {};
+    sendInitData()
+      .then(_ => { })
+      .catch(err => console.error(err));
+    return () => { };
   }, []);
-
   return (
-    <div className="h-full flex flex-column justify-content-between" style={{minHeight: 'inherit'}}>
+    <div className="h-full flex flex-column justify-content-between" style={{ minHeight: 'inherit' }}>
       <BrowserRouter>
         <div>
           <Header />
