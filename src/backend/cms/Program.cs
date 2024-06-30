@@ -15,12 +15,10 @@ app.UseUmbraco()
     .WithMiddleware(u =>
     {
         u.UseBackOffice();
-        u.UseWebsite();
     })
     .WithEndpoints(u =>
     {
         u.UseBackOfficeEndpoints();
-        u.UseWebsiteEndpoints();
     });
 
 await app.RunAsync();
