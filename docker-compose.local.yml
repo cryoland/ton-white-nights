@@ -31,17 +31,17 @@ services:
 
   cms:
     build:
-      context: ./backend/cms
+      context: ./src/backend/cms
       dockerfile: Dockerfile
     ports:
       - '63761:63761'
       - '44326:44326'
     volumes:
-      #- ./backend/cms/Views:/app/Views
-      - ./backend/cms/wwwroot/media:/app/wwwroot/media
-      #- ./backend/cms/uSync:/app/uSync
-      # - ./backend/cms/umbraco:/app/umbraco
+      - ./src/backend/cms/wwwroot/media:/app/wwwroot/media
       - ~/.aspnet/https:/https:ro
+      # - ./src/backend/cms/Views:/app/Views
+      # - ./src/backend/cms/uSync:/app/uSync
+      # - ./src/backend/cms/umbraco:/app/umbraco
     environment:
       - ASPNETCORE_HTTP_PORTS=63761
       - ASPNETCORE_HTTPS_PORTS=44326
@@ -57,7 +57,7 @@ services:
 
   api:
     build:
-      context: ./backend/api
+      context: ./src/backend/api
       dockerfile: Dockerfile
     ports:
       - '8090:8090'
@@ -72,7 +72,7 @@ services:
 
   bot:
     build:
-      context: ./backend/bot
+      context: ./src/backend/bot
       dockerfile: Dockerfile
     environment:
       - TG_BOT_TOKEN=${TG_BOT_TOKEN}
@@ -86,7 +86,7 @@ services:
     ports:
       - '5173:5173'
     volumes:
-      - ./frontend/tma:/usr/src/app
+      - ./src/frontend/tma:/usr/src/app
     environment:
       - API_DOMAIN=${API_DOMAIN}
       - API_AUTH_TOKEN=${API_AUTH_TOKEN}

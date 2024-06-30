@@ -17,7 +17,7 @@ services:
 
   api:
     build:
-      context: ./backend/api
+      context: ./src/backend/api
       dockerfile: Dockerfile
     ports:
       - '8090:8090'
@@ -28,7 +28,7 @@ services:
 
   bot:
     build:
-      context: ./backend/bot
+      context: ./src/backend/bot
       dockerfile: Dockerfile
     env_file: .env
     depends_on:
@@ -41,7 +41,7 @@ services:
     ports:
       - '5173:5173'
     volumes:
-      - ./frontend/tma:/usr/src/app
+      - ./src/frontend/tma:/usr/src/app
     environment:
       - "API_DOMAIN=${API_DOMAIN}"
     command: sh -c "npm install && npm run dev-host"
